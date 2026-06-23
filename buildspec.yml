@@ -1,22 +1,21 @@
 version: 0.2
 
 phases:
-  install:
-    commands:
-      - echo Installing dependencies
-
   pre_build:
     commands:
-      - echo Pre-build phase
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 360357042190.dkr.ecr.ap-south-1.amazonaws.com
 
   build:
     commands:
-      - echo Building Docker image
+      - echo Build started
       - docker build -t brain-tasks-app .
+      - docker tag brain-tasks-app:latest 360357042190.dkr.ecr.ap-south-1.amazonaws.com/brain-tasks-app:latest
 
   post_build:
     commands:
-      - echo Build completed
+      - echo Pushing image to ECR...
+      - docker push 360357042190.dkr.ecr.ap-south-1.amazonaws.com/brain-tasks-app:latest
 
 artifacts:
   files:
