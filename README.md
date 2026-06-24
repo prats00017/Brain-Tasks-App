@@ -1,166 +1,163 @@
-# Brain Tasks Application CI/CD Pipeline using AWS
+# Brain Tasks Application - DevOps CI/CD Project
 
 ## Overview
 
-This project demonstrates the complete CI/CD workflow for deploying a containerized Brain Tasks application using AWS cloud-native services. The application source code is stored in GitHub, built automatically using AWS CodeBuild, pushed to Amazon Elastic Container Registry (ECR), deployed to Amazon Elastic Kubernetes Service (EKS), and monitored using Amazon CloudWatch.
+Brain Tasks is a task management web application deployed using a complete AWS-based DevOps CI/CD pipeline. The application is containerized with Docker, stored in Amazon ECR, deployed on Amazon EKS using Kubernetes, and monitored with Amazon CloudWatch.
 
 ---
 
 ## Architecture
 
+```text
 GitHub Repository
-↓
+        │
+        ▼
+AWS CodePipeline
+        │
+        ▼
 AWS CodeBuild
-↓
-Docker Image Creation
-↓
-Amazon ECR
-↓
-Amazon EKS Cluster
-↓
-Kubernetes Deployment and Service
-↓
-LoadBalancer
-↓
+        │
+        ▼
+Docker Image Build
+        │
+        ▼
+Amazon Elastic Container Registry (ECR)
+        │
+        ▼
+Amazon Elastic Kubernetes Service (EKS)
+        │
+        ▼
+Kubernetes Deployment & Service
+        │
+        ▼
+Application Load Balancer
+        │
+        ▼
 Brain Tasks Application
-↓
-CloudWatch Logs
+        │
+        ▼
+Amazon CloudWatch Monitoring
+```
 
 ---
 
 ## Technologies Used
 
-* AWS CodeBuild
-* Amazon Elastic Container Registry (ECR)
-* Amazon Elastic Kubernetes Service (EKS)
-* Kubernetes
-* Docker
-* GitHub
-* AWS CloudWatch
-* kubectl
+- GitHub
+- Docker
+- AWS CodePipeline
+- AWS CodeBuild
+- Amazon ECR
+- Amazon EKS
+- Kubernetes
+- CloudWatch
+- YAML
+- Node.js
 
 ---
 
-## Project Structure
+## Repository Structure
 
 ```
 Brain-Tasks-App/
 │
-├── dist/
-├── k8s/
-│   ├── deployment.yaml
-│   └── service.yaml
 ├── Dockerfile
 ├── buildspec.yml
+├── README.md
 ├── package-lock.json
-└── README.md
+├── dist/
+└── k8s/
+    ├── deployment.yaml
+    └── service.yaml
 ```
 
 ---
 
-## Dockerization
+## CI/CD Workflow
 
-A Dockerfile was created to containerize the Brain Tasks application.
+### Source Stage
+- Source code is maintained in GitHub.
+- AWS CodePipeline fetches the latest code automatically.
 
-```dockerfile
-docker build -t brain-tasks-app .
-```
+### Build Stage
+- AWS CodeBuild executes the build process.
+- Uses `buildspec.yml` configuration.
+- Builds Docker image successfully.
 
----
+### Container Registry
+- Docker image is pushed to Amazon Elastic Container Registry (ECR).
 
-## CI Pipeline
+### Deployment Stage
+- Amazon EKS cluster is used for deployment.
+- Kubernetes Deployment and Service manifests are applied.
+- Multiple replicas ensure high availability.
 
-AWS CodeBuild was configured using the buildspec.yml file.
-
-Build stages:
-
-* Install
-* Pre-Build
-* Build
-* Post-Build
-
-The build process completed successfully.
-
----
-
-## Amazon ECR
-
-Repository Name:
-
-```
-brain-tasks-app
-```
-
-Docker image was successfully pushed with the latest tag.
+### Monitoring
+- Build logs are monitored using Amazon CloudWatch.
+- CodeBuild execution logs are stored in CloudWatch Log Groups.
 
 ---
 
-## Kubernetes Deployment
-
-Deployment file:
-
-```
-deployment.yaml
-```
-
-Service file:
-
-```
-service.yaml
-```
-
-Commands used:
+## Docker Commands
 
 ```bash
-kubectl apply -f deployment.yaml
-kubectl apply -f service.yaml
+docker build -t brain-tasks-app .
+docker tag brain-tasks-app:latest <ECR-URI>
+docker push <ECR-URI>
 ```
 
 ---
 
-## EKS Cluster Verification
+## Kubernetes Commands
 
-Nodes:
+### Deploy Application
+
+```bash
+kubectl apply -f k8s/deployment.yaml
+kubectl apply -f k8s/service.yaml
+```
+
+### Verify Cluster
 
 ```bash
 kubectl get nodes
-```
-
-Deployments:
-
-```bash
 kubectl get deployments
-```
-
-Pods:
-
-```bash
 kubectl get pods
-```
-
-Services:
-
-```bash
 kubectl get svc
 ```
 
 ---
 
-## Application Access
+## AWS Services Used
 
-The application was exposed externally using a Kubernetes LoadBalancer service.
-
-Application URL:
-
-```
-http://af09f1be503794c82859c92d561276b9-2029089949.ap-south-1.elb.amazonaws.com
-```
+| Service | Purpose |
+|-----------|---------|
+| GitHub | Source Code Repository |
+| CodePipeline | CI/CD Pipeline |
+| CodeBuild | Build Automation |
+| Docker | Containerization |
+| Amazon ECR | Container Registry |
+| Amazon EKS | Kubernetes Cluster |
+| Kubernetes | Container Orchestration |
+| LoadBalancer Service | External Access |
+| CloudWatch | Monitoring and Logs |
 
 ---
 
-## Monitoring
+## Application Deployment
 
-AWS CloudWatch Log Groups were used to monitor CodeBuild execution logs.
+The application is exposed using a Kubernetes LoadBalancer service and can be accessed through the generated AWS Elastic Load Balancer URL.
+
+---
+
+## Monitoring and Logging
+
+Amazon CloudWatch is used to monitor:
+
+- CodeBuild logs
+- Build status
+- Pipeline execution events
+- Application deployment activities
 
 Log Group:
 
@@ -170,6 +167,24 @@ Log Group:
 
 ---
 
-## Outcome
+## Project Outcome
 
-Successfully implemented an end-to-end CI/CD pipeline using AWS services and deployed the Brain Tasks application on Amazon EKS with external accessibility and CloudWatch monitoring.
+Successfully implemented an end-to-end DevOps workflow using AWS cloud-native services.
+
+### Achievements
+
+- Dockerized the application.
+- Built automated CI/CD pipeline using CodePipeline and CodeBuild.
+- Stored images in Amazon ECR.
+- Deployed application on Amazon EKS.
+- Exposed application using Kubernetes LoadBalancer.
+- Monitored build logs using Amazon CloudWatch.
+- Verified successful application deployment.
+
+---
+
+## Author
+
+**Prateek Gupta**
+
+MCA | Cloud & DevOps Enthusiast
